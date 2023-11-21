@@ -56,9 +56,7 @@ namespace HotelListingAPI.Controllers
         public async Task<IActionResult> PutCountry(int id, UpdateCountryDTO dto)
         {
             if (id != dto.Id)
-            {
                 return BadRequest();
-            }
 
             Country country = await _countriesRepository.GetAsync(id);
 

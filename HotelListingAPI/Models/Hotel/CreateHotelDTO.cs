@@ -1,6 +1,6 @@
 ﻿
 namespace HotelListingAPI.Models.Hotel {
-    public class GetHotelDTO : BaseHotelDTO {
+    public class CreateHotelDTO : BaseHotelDTO {
         public int Id { get; set; }
     }
 }
