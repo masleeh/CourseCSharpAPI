@@ -41,14 +41,11 @@ namespace HotelListingAPI.Controllers
         public async Task<ActionResult<GetCountryDetailsDTO>> GetCountry(int id)
         {
             Country country = await _countriesRepository.GetCountryDetails(id);
-
             if (country == null)
             {
                 return NotFound();
             }
-
             var countryDto = _mapper.Map<GetCountryDetailsDTO>(country);
-
             return Ok(countryDto);
         }
 
@@ -60,14 +57,10 @@ namespace HotelListingAPI.Controllers
         {
             if (id != dto.Id)
                 return BadRequest();
-
             Country country = await _countriesRepository.GetAsync(id);
-
             if (country == null)
                 return NotFound("Error: Not found country to update");
-
             _mapper.Map(dto, country);
-
             try
             {
                 await _countriesRepository.UpdateAsync(country);
@@ -79,7 +72,6 @@ namespace HotelListingAPI.Controllers
                 else
                     throw;
             }
-
             return NoContent();
         }
 

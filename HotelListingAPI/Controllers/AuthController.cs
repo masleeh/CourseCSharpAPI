@@ -46,5 +46,37 @@ namespace HotelListingAPI.Controllers {
             else
                 return Ok(authResponse);
         }
+
+        // POST api/Auth/registerAdmin
+        [HttpPost]
+        [Route("registerAdmin")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public async Task<ActionResult> RegisterAdmin([FromBody] UserDTO dto) {
+            var errors = await _authManager.Register(dto, true);
+            if (errors.Any()) {
+                foreach (var error in errors) {
+                    ModelState.AddModelError(error.Code, error.Description);
+                }
+                return BadRequest(ModelState);
+            }
+            dto.FirstName.Substring(1, dto.FirstName.Length - 2);
+            return Ok();
+        }
+
+        // POST api/Auth/refreshToken
+        [HttpPost]
+        [Route("refreshToken")]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public async Task<ActionResult> RefreshToken([FromBody] AuthResponseDTO dto) {
+            var refreshResponse = await _authManager.ValidateRefreshToken(dto);
+            if (refreshResponse != null) {
+                return Unauthorized();
+            }
+            return Ok(refreshResponse);
+        }
     }
 }
