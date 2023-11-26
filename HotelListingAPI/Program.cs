@@ -1,9 +1,11 @@
 using HotelListingAPI.Config;
 using HotelListingAPI.Contracts;
 using HotelListingAPI.Data;
+using HotelListingAPI.Middleware;
 using HotelListingAPI.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
@@ -17,8 +19,6 @@ builder.Services.AddDbContext<HotelListingDbContext>(options => {
 });
 
 // Add services to the container.
-// Controllers
-builder.Services.AddControllers();
 
 // Identity Core
 builder.Services.AddIdentityCore<User>()
@@ -63,6 +63,17 @@ builder.Services.AddScoped<ICountriesRepository, CountriesRepository>();
 builder.Services.AddScoped<IHotelsRepository, HotelRepository>();
 builder.Services.AddScoped<IAuthManager, AuthManager>();
 
+// Caching
+builder.Services.AddResponseCaching(options => {
+    options.MaximumBodySize = 1024;
+    options.UseCaseSensitivePaths = true;
+});
+
+// Controllers
+builder.Services.AddControllers().AddOData(options => {
+    options.Select().Filter().OrderBy();
+});
+
 // Serilog
 builder.Host.UseSerilog((ctx, lc) => lc.WriteTo.Console().ReadFrom.Configuration(ctx.Configuration));
 
@@ -74,11 +85,25 @@ if (app.Environment.IsDevelopment()) {
     app.UseSwaggerUI();
 }
 
+// Using custom middleware
+app.UseMiddleware<ExceptionMiddleware>();
+
 app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
 
 app.UseCors("AllowAll");
+
+app.UseResponseCaching();
+
+app.Use(async (context, next) => {
+    context.Response.GetTypedHeaders().CacheControl = new Microsoft.Net.Http.Headers.CacheControlHeaderValue() {
+        Public = true,
+        MaxAge = TimeSpan.FromSeconds(10)
+    };
+    context.Response.Headers[Microsoft.Net.Http.Headers.HeaderNames.Vary] = new string[] { "Accept-Encoding" };
+    await next();
+});
 
 app.UseAuthentication();
 
