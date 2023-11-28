@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace HotelListingAPI.Data {
+namespace HotelListingData {
     public class User : IdentityUser {
         public string FirstName { get; set; }
         public string LastName { get; set; }

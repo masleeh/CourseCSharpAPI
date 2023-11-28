@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace HotelListingAPI.Data.Configurations {
+namespace HotelListingData.Configurations {
     public class HotelConfiguration : IEntityTypeConfiguration<Hotel> {
         public void Configure(EntityTypeBuilder<Hotel> builder) {
             builder.HasData(

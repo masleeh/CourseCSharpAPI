@@ -5,14 +5,13 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using HotelListingAPI.Data;
-using HotelListingAPI.Repositories;
+using HotelListingCore.Repositories;
 using AutoMapper;
-using HotelListingAPI.Models.Hotel;
-using HotelListingAPI.Contracts;
+using HotelListingData;
+using HotelListingCore.Contracts;
+using HotelListingCore.Models.Hotel;
 
-namespace HotelListingAPI.Controllers
-{
+namespace HotelListingAPI.Controllers {
     [Route("api/[controller]")]
     [ApiController]
     public class HotelsController : ControllerBase

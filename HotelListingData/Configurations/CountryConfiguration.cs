@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace HotelListingAPI.Data.Configurations {
+namespace HotelListingData.Configurations {
     public class CountryConfiguration : IEntityTypeConfiguration<Country> {
         public void Configure(EntityTypeBuilder<Country> builder) {
             builder.HasData(

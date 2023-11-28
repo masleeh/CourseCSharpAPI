@@ -1,5 +1,5 @@
-﻿using HotelListingAPI.Contracts;
-using HotelListingAPI.Models.User;
+﻿using HotelListingCore.Contracts;
+using HotelListingCore.Models.User;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -65,7 +65,6 @@ namespace HotelListingAPI.Controllers {
                 }
                 return BadRequest(ModelState);
             }
-            dto.FirstName.Substring(1, dto.FirstName.Length - 2);
             return Ok();
         }
 
