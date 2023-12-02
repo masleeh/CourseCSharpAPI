@@ -10,10 +10,12 @@ using AutoMapper;
 using HotelListingData;
 using HotelListingCore.Contracts;
 using HotelListingCore.Models.Hotel;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HotelListingAPI.Controllers {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class HotelsController : ControllerBase
     {
         private readonly IMapper _mapper;
